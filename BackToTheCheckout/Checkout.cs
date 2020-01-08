@@ -6,15 +6,25 @@ namespace BackToTheCheckout
     public class Checkout
     {
         private readonly List<string> _basket = new List<string>();
+        private readonly List<XForYDiscount> _xForYDiscounts;
+
+        public Checkout()
+        {
+            _xForYDiscounts = new List<XForYDiscount>()
+                {
+                    new XForYDiscount("A99", 3, 1.3m, GetPrice("A99")),
+                    new XForYDiscount("B15", 2, 0.45m, GetPrice("B15"))
+                };
+        }
+
         public decimal Total => SumBasket();
         public void Scan(string sku) { _basket.Add(sku); }
 
         private decimal SumBasket()
         {
-            var totalA99s = _basket.Count(sku => sku=="A99");
-            // ReSharper disable once PossibleLossOfFraction
-            var a99Skus = ((totalA99s / 3) * 1.3m) + ((totalA99s % 3) * 0.5m);
-            return a99Skus + _basket.Where(s => s!="A99").Sum(GetPrice);
+            var total = _xForYDiscounts.Sum(discount => discount.Apply(_basket));
+            var discountedSkus = _xForYDiscounts.Select(discount => discount.Sku);
+            return total + _basket.Where(sku => !discountedSkus.Contains(sku)).Sum(GetPrice);
         }
 
 
