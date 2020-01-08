@@ -22,7 +22,7 @@ namespace BackToTheCheckout
 
         private decimal SumBasket()
         {
-            var total = _xForYDiscounts.Sum(discount => discount.Apply(_basket));
+            var total = _xForYDiscounts.Sum(discount => discount.Apply(_basket)); 
             var discountedSkus = _xForYDiscounts.Select(discount => discount.Sku);
             return total + _basket.Where(sku => !discountedSkus.Contains(sku)).Sum(GetPrice);
         }
