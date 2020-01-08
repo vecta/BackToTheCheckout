@@ -9,7 +9,17 @@ namespace BackToTheCheckout
         public decimal Total => SumBasket();
 
         private decimal SumBasket() { return _basket.Sum(GetPrice); }
-        private decimal GetPrice(string sku) { return 0.5m; }
+
+        private decimal GetPrice(string sku)
+        {
+            return sku switch
+            {
+                "A99" => 0.5m,
+                "B15" => 0.3m,
+                "C40" => 0.6m,
+                _ => 0
+            };
+        }
         public void Scan(string sku) { _basket.Add(sku); }
     }
 }

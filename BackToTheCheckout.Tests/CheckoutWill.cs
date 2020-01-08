@@ -11,12 +11,23 @@ namespace BackToTheCheckout.Tests
             var checkout = new Checkout();
             Assert.That(checkout.Total, Is.EqualTo(0m));
         }
+
         [Test]
         public void ReturnItemPriceWhenASingleItemIsScanned()
         {
             var checkout = new Checkout();
             checkout.Scan("A99");
             Assert.That(checkout.Total, Is.EqualTo(0.5m));
+        }
+
+        [Test]
+        public void ReturnSumOfItemsPriceWhenNoValidDiscountedItemsAreScanned()
+        {
+            var checkout = new Checkout();
+            checkout.Scan("A99");
+            checkout.Scan("B15");
+            checkout.Scan("C40");
+            Assert.That(checkout.Total, Is.EqualTo(1.4m));
         }
     }
 }
