@@ -29,5 +29,15 @@ namespace BackToTheCheckout.Tests
             checkout.Scan("C40");
             Assert.That(checkout.Total, Is.EqualTo(1.4m));
         }
+
+        [Test]
+        public void ReturnDiscountedPriceIfItemsScannedAreInAValidDiscount()
+        {
+            var checkout = new Checkout();
+            checkout.Scan("A99");
+            checkout.Scan("A99");
+            checkout.Scan("A99");
+            Assert.That(checkout.Total, Is.EqualTo(1.3m));
+        }
     }
 }

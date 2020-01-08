@@ -7,8 +7,16 @@ namespace BackToTheCheckout
     {
         private readonly List<string> _basket = new List<string>();
         public decimal Total => SumBasket();
+        public void Scan(string sku) { _basket.Add(sku); }
 
-        private decimal SumBasket() { return _basket.Sum(GetPrice); }
+        private decimal SumBasket()
+        {
+            var totalA99s = _basket.Count(sku => sku=="A99");
+            // ReSharper disable once PossibleLossOfFraction
+            var a99Skus = ((totalA99s / 3) * 1.3m) + ((totalA99s % 3) * 0.5m);
+            return a99Skus + _basket.Where(s => s!="A99").Sum(GetPrice);
+        }
+
 
         private decimal GetPrice(string sku)
         {
@@ -20,6 +28,5 @@ namespace BackToTheCheckout
                 _ => 0
             };
         }
-        public void Scan(string sku) { _basket.Add(sku); }
     }
 }
