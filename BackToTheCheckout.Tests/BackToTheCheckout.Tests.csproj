@@ -13,4 +13,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BackToTheCheckout\BackToTheCheckout.csproj" />
+  </ItemGroup>
+
 </Project>
